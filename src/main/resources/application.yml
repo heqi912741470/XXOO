@@ -1,0 +1,11 @@
+server:
+  port: 8081
+
+
+spring:
+  datasource:
+    username: root_hq
+    password: Public_123
+    url: jdbc:mysql://rm-bp1722k1apdbd11383o.mysql.rds.aliyuncs.com:3306/x_hq?useUnicode=true&characterEncoding=utf-8
+    driver-class-name: com.mysql.jdbc.Driver
+
