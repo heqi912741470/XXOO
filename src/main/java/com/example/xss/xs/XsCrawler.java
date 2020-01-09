@@ -1,5 +1,6 @@
 package com.example.xss.xs;
 
+import com.example.xss.entity.Catalog;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
@@ -18,11 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XsCrawler {
-    public void doGet() {
+
+    public List<Catalog> doGet() {
+        List<Catalog> catalogList = new ArrayList<>();
         //打开浏览器
         CloseableHttpClient httpClient = HttpClients.createDefault();
         //申明get请求
-        HttpGet httpGet = new HttpGet("http://book.zongheng.com/showchapter/908055.html");
+        HttpGet httpGet = new HttpGet("http://www.zongheng.com/rank.html");
         //设置代理
         HttpHost proxy = new HttpHost("58.218.92.76", 3509);
         //设置代理IP，设置连接超时时间 、 设置 请求读取数据的超时时间 、 设置从connect Manager获取Connection超时时间、
@@ -59,15 +62,15 @@ public class XsCrawler {
             Document doc = Jsoup.parse(str);
             //根据标签拿到的标签，得到数据
             Elements elements = doc.select("div[class=rank_main]").select("div[class=rank_i_bname fl]");
-            //存储url
-            List<String> urls = new ArrayList<String>();
+
+
             for (Element element : elements) {
                 String NewStr = element.text();
                 String url = element.select("a").attr("href").replace("book", "showchapter");
-                urls.add(url);
-                System.out.println(NewStr);
-                System.out.println(url);
-
+                Catalog catalog = new Catalog();
+                catalog.setXsName(NewStr);
+                catalog.setXsUrl(url);
+                catalogList.add(catalog);
             }
 
 
@@ -80,6 +83,7 @@ public class XsCrawler {
             e.printStackTrace();
         }
 
+        return catalogList;
 
     }
 }
